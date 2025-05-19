@@ -1,0 +1,16 @@
+.idea/
+.vscode/
+**/bin/
+**/obj/
+.git/
+logs/
+*.user
+*.suo
+*.git
+*.md
+*.DS_Store
+
+# Docker-specific
+Dockerfile*
+docker-compose*
+*.dockerignore

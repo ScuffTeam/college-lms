@@ -1,0 +1,60 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: college-lms-postgres
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgres/data/
+    env_file:
+      - ./.env
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+  redis:
+    image: redis:latest
+    container_name: college-lms-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    environment:
+      - REDIS_PORT=6379
+  lms-api:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: ["sh", "-c", "dotnet ef database update && echo Migrations applied."]
+    restart: unless-stopped
+    container_name: college-lms-api
+    ports:
+      - "8080:8080"
+    environment:
+      AppOptions__SecretKey: ${SECRET_KEY}
+      AppOptions__RedisConnection: ${REDIS_CONNECTION}
+      AppOptions__DatabaseOptions__Host: localhost
+      AppOptions__DatabaseOptions__Port: 5432
+      AppOptions__DatabaseOptions__Database: ${DB_NAME}
+      AppOptions__DatabaseOptions__Username: ${DB_USER}
+      AppOptions__DatabaseOptions__Password: ${DB_PASSWORD}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    env_file:
+      - ./.env
+    volumes:
+      - ./logs:/app/logs
+
+volumes:
+  postgres_data:
+  redis_data:
