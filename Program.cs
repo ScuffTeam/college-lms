@@ -1,5 +1,9 @@
+using System.Text;
 using college_lms;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,7 +63,10 @@ builder
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["SecretKey"])
+                Encoding.UTF8.GetBytes(
+                    builder.Configuration["SecretKey"]
+                        ?? throw new ArgumentException("No SecretKey found in env")
+                )
             ),
             ClockSkew = TimeSpan.Zero,
         };
