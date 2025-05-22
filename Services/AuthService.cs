@@ -1,64 +1,47 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
 using college_lms.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace college_lms.Services;
 
 public class AuthService : IAuthService
 {
     private readonly UserManager<IdentityUser> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly string _secretKey;
 
-    public AuthService(
-        UserManager<IdentityUser> userManager,
-        RoleManager<IdentityRole> roleManager,
-        IOptions<AppSettings> options
-    )
+    public AuthService(UserManager<IdentityUser> userManager, IOptions<AppSettings> options)
     {
         _userManager = userManager;
-        _roleManager = roleManager;
         _secretKey = options.Value.SecretKey;
     }
 
-    public async Task<TokenResponse> RegisterAsync(RegisterRequest request)
+    public async Task<TokenResponse> LoginAsync(string email, string password)
     {
-        var user = new IdentityUser { UserName = request.Email, Email = request.Email };
-        var result = await _userManager.CreateAsync(user, request.Password);
-
-        if (!result.Succeeded)
-            throw new Exception("Registration failed");
-
-        if (!await _roleManager.RoleExistsAsync("User"))
-            await _roleManager.CreateAsync(new IdentityRole("User"));
-
-        await _userManager.AddToRoleAsync(user, "User");
-
-        return GenerateJwtToken(user);
-    }
-
-    public async Task<TokenResponse> LoginAsync(LoginRequest request)
-    {
-        var user = await _userManager.FindByEmailAsync(request.Email);
-        if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password))
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user == null || !await _userManager.CheckPasswordAsync(user, password))
             throw new UnauthorizedAccessException("Invalid credentials");
 
-        return GenerateJwtToken(user);
+        return await GenerateJwtToken(user);
     }
 
-    private TokenResponse GenerateJwtToken(IdentityUser user)
+    private async Task<TokenResponse> GenerateJwtToken(IdentityUser user)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new(JwtRegisteredClaimNames.Sub, user.Id),
+            new(
+                JwtRegisteredClaimNames.Email,
+                user.Email
+                    ?? throw new ArgumentNullException(nameof(user.Email), "User email is null")
+            ),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
 
         // Add roles as claims
@@ -69,7 +52,7 @@ public class AuthService : IAuthService
             issuer: "self",
             audience: "users",
             claims: claims,
-            expires: DateTime.Now.AddMinutes(30),
+            expires: DateTime.Now.AddHours(12),
             signingCredentials: credentials
         );
 

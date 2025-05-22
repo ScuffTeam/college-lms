@@ -1,5 +1,7 @@
 using System.Text;
 using college_lms;
+using college_lms.Services;
+using college_lms.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
