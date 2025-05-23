@@ -2,8 +2,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace college_lms;
 
-public class AppSettings
+public class AppOptions
 {
+    public const string Name = "AppOptions";
+
     [Required(ErrorMessage = "SecretKey is required.")]
     public string SecretKey { get; set; } = default!;
 

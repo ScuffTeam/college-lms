@@ -425,3 +425,6 @@ fabric.properties
 
 # LLM configs
 .roo
+
+# Temporary files
+tmp/

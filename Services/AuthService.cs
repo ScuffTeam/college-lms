@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using college_lms.Data.DTOs.Auth;
 using college_lms.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -13,7 +14,7 @@ public class AuthService : IAuthService
     private readonly UserManager<IdentityUser> _userManager;
     private readonly string _secretKey;
 
-    public AuthService(UserManager<IdentityUser> userManager, IOptions<AppSettings> options)
+    public AuthService(UserManager<IdentityUser> userManager, IOptions<AppOptions> options)
     {
         _userManager = userManager;
         _secretKey = options.Value.SecretKey;

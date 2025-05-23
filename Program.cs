@@ -24,10 +24,12 @@ if (builder.Environment.IsDevelopment())
     }
 }
 
+builder.Configuration.AddEnvironmentVariables();
+
 // Configure AppSettings from environment variables
 builder
-    .Services.AddOptions<AppSettings>()
-    .Bind(builder.Configuration)
+    .Services.AddOptions<AppOptions>()
+    .Bind(builder.Configuration.GetSection("AppOptions"))
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
@@ -58,18 +60,16 @@ builder
     })
     .AddJwtBearer(options =>
     {
+        var secretKey =
+            builder.Configuration.GetSection(AppOptions.Name)[nameof(AppOptions.SecretKey)]
+            ?? throw new ArgumentException("No SecretKey found in env");
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = false,
             ValidateAudience = false,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(
-                    builder.Configuration["SecretKey"]
-                        ?? throw new ArgumentException("No SecretKey found in env")
-                )
-            ),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
             ClockSkew = TimeSpan.Zero,
         };
     });
