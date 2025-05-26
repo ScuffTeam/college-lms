@@ -1,7 +1,9 @@
 using System.Text;
 using college_lms;
+using college_lms.Middlewares;
 using college_lms.Services;
 using college_lms.Services.Interfaces;
+using college_lms.Services.Redis;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -35,7 +37,7 @@ builder
 
 // Configure DbContext with Npgsql
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration["ConnectionString"])
+    options.UseNpgsql(builder.Configuration[$"AppOptions:ConnectionStrings:DefaultDb"])
 );
 
 // Setup Identity
@@ -50,6 +52,15 @@ builder
     })
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
+
+// Setup Cache
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration["AppOptions:ConnectionStrings:Redis"];
+});
+
+builder.Services.AddSingleton<IRefreshTokenStore, CacheService>();
+builder.Services.AddSingleton<IJwtBlacklistStore, CacheService>();
 
 // Add JWT Authentication
 builder
@@ -84,6 +95,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddControllers();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Use Middleware
 app.UseAuthentication();

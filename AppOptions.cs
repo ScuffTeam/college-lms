@@ -17,4 +17,7 @@ public class ConnectionStringsSection
 {
     [Required]
     public string DefaultDb { get; set; } = default!;
+
+    [Required]
+    public string Redis { get; set; } = default!;
 }
