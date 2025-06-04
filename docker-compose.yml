@@ -12,7 +12,7 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_DB=${DB_NAME}
     ports:
-      - "5432:5432"
+      - "${DB_PORT}:${DB_PORT}"
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}" ]
       interval: 5s
@@ -23,11 +23,11 @@ services:
     image: redis:latest
     container_name: college-lms-redis
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT}:${REDIS_PORT}"
     volumes:
       - redis_data:/data
     environment:
-      - REDIS_PORT=6379
+      - REDIS_PORT=${REDIS_PORT}
   lms-api:
     build:
       context: .
@@ -36,12 +36,13 @@ services:
     restart: unless-stopped
     container_name: college-lms-api
     ports:
-      - "8080:8080"
+      - "${APP_PORT}:${APP_PORT}"
     environment:
+      APP_PORT: ${APP_PORT}
       AppOptions__SecretKey: ${SECRET_KEY}
-      AppOptions__RedisConnection: ${REDIS_CONNECTION}
+      AppOptions__RedisConnection: localhost:${REDIS_PORT}
       AppOptions__DatabaseOptions__Host: localhost
-      AppOptions__DatabaseOptions__Port: 5432
+      AppOptions__DatabaseOptions__Port: ${DB_PORT}
       AppOptions__DatabaseOptions__Database: ${DB_NAME}
       AppOptions__DatabaseOptions__Username: ${DB_USER}
       AppOptions__DatabaseOptions__Password: ${DB_PASSWORD}

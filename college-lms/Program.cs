@@ -13,20 +13,19 @@ using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Load .env in Development
-// if (builder.Environment.IsDevelopment())
-// {
-//     var envFile = Path.Combine(AppContext.BaseDirectory, ".env");
-//     if (File.Exists(envFile))
-//     {
-//         foreach (var line in File.ReadAllLines(envFile))
-//         {
-//             var parts = line.Split('=', 2);
-//             if (parts.Length == 2)
-//                 Environment.SetEnvironmentVariable(parts[0], parts[1]);
-//         }
-//     }
-// }
+if (builder.Environment.IsDevelopment())
+{
+    var envFile = Path.Combine(AppContext.BaseDirectory, "./.env.Development");
+    if (File.Exists(envFile))
+    {
+        foreach (var line in File.ReadAllLines(envFile))
+        {
+            var parts = line.Split('=', 2);
+            if (parts.Length == 2)
+                Environment.SetEnvironmentVariable(parts[0], parts[1]);
+        }
+    }
+}
 
 builder.Configuration.AddEnvironmentVariables();
 

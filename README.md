@@ -2,6 +2,8 @@
 
 ## HOW TO START
 
+### Migrations
+
 ### Docker
 
 Copy .env example file and provide configurations

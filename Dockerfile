@@ -17,3 +17,4 @@ FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
 COPY --from=build /app ./
 ENTRYPOINT ["dotnet", "college-lms.dll"]
+EXPOSE ${APP_PORT}
