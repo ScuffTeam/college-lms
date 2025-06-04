@@ -18,3 +18,10 @@ WORKDIR /app
 COPY --from=build /app ./
 ENTRYPOINT ["dotnet", "college-lms.dll"]
 EXPOSE ${APP_PORT}
+
+COPY ./efbundle ./
+RUN if [ -f "efbundle" ]; then \
+  echo "✅ Found efbundle file, copying..."; \
+else \
+  echo "⚠️ efbundle file not found, skipping copy"; \
+fi
