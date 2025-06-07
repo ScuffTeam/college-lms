@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using college_lms.Data.DTOs.Auth;
+using college_lms.Data.Entities;
 using college_lms.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -12,12 +13,12 @@ namespace college_lms.Services;
 
 public class AuthService : IAuthService
 {
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly UserManager<User> _userManager;
     private readonly IRefreshTokenStore _refreshTokenStore;
     private readonly string _secretKey;
 
     public AuthService(
-        UserManager<IdentityUser> userManager,
+        UserManager<User> userManager,
         IRefreshTokenStore refreshTokenStore,
         IOptions<AppOptions> options
     )
@@ -73,7 +74,7 @@ public class AuthService : IAuthService
         };
     }
 
-    private async Task<string> GenerateJwtToken(IdentityUser user)
+    private async Task<string> GenerateJwtToken(User user)
     {
         var claims = new List<Claim>
         {

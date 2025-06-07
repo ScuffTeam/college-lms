@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using college_lms.Data.DTOs.Auth;
+using college_lms.Data.Entities;
 using college_lms.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -12,11 +13,11 @@ using Microsoft.IdentityModel.Tokens;
 //
 // public class UserService : IUserService
 // {
-//     private readonly UserManager<IdentityUser> _userManager;
+//     private readonly UserManager<User> _userManager;
 //     private readonly IRefreshTokenStore _refreshTokenStore;
 //
 //     public AuthService(
-//         UserManager<IdentityUser> userManager,
+//         UserManager<User> userManager,
 //         IRefreshTokenStore refreshTokenStore,
 //         IOptions<AppOptions> options
 //     )
