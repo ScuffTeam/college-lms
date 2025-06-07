@@ -1,5 +1,6 @@
 using System.Text;
 using college_lms;
+using college_lms.Data.Entities;
 using college_lms.Middlewares;
 using college_lms.Services;
 using college_lms.Services.Interfaces;
@@ -55,7 +56,7 @@ builder.Services.AddDbContext<AppDbContext>(
 
 // Setup Identity
 builder
-    .Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+    .Services.AddIdentity<User, IdentityRole>(options =>
     {
         options.Password.RequireDigit = true;
         options.Password.RequireLowercase = true;
