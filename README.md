@@ -12,6 +12,10 @@ cp .env.example .env
 ```sh
 docker-compose up -d
 ```
+3. Rebuild on update
+```sh
+docker-compose up -d --build
+```
 
 ### Manual
 
@@ -25,11 +29,23 @@ cp env.Development.example env.Development
 
 ### Docker
 
-1. Run step 1 from Manual start and use
+If necessary, install dotnet ef tool:
+```sh
+dotnet tool install --global dotnet-ef
+```
+
+1. Do step 1 from Start Manual and run:
 ```sh
 dotnet ef --project college-lms migrations bundle --self-contained -r linux-x64 --force
 ```
-2. Docker pulls file automatically, run /app/efbundle on machine
+2. Docker pulls file automatically with `--build` option
+```sh
+dotnet tool install --global dotnet-ef
+```
+3. run /app/efbundle in app container
+```sh
+docker exec lms-api /app/efbundle 
+```
 
 ### Manual
 

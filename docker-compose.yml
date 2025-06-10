@@ -48,6 +48,7 @@ services:
       AppOptions__DatabaseOptions__Database: ${DB_NAME}
       AppOptions__DatabaseOptions__Username: ${DB_USER}
       AppOptions__DatabaseOptions__Password: ${DB_PASSWORD}
+      DOTNET_ENVIRONMENT: ${DOTNET_ENVIRONMENT}
     depends_on:
       postgres:
         condition: service_healthy

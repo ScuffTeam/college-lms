@@ -15,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 if (builder.Environment.IsDevelopment())
 {
-    var envFile = Path.Combine(AppContext.BaseDirectory, "./.env.Development");
+    string envFile = Path.Combine(AppContext.BaseDirectory, "./.env.Development");
     if (File.Exists(envFile))
     {
         foreach (var line in File.ReadAllLines(envFile))
@@ -106,6 +106,9 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 // Add Controllers
 builder.Services.AddControllers();
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
@@ -116,4 +119,11 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
 app.Run();
+

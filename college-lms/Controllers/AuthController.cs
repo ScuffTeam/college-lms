@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace college_lms.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/auth")]
 public class AuthController(IAuthService authService) : ControllerBase
 {
     private readonly IAuthService _authService = authService;
@@ -20,7 +20,10 @@ public class AuthController(IAuthService authService) : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginRequest loginRequest)
     {
-        var response = await _authService.LoginAsync(loginRequest.Email, loginRequest.Password);
+        TokenResponse response = await _authService.LoginAsync(
+            loginRequest.Email,
+            loginRequest.Password
+        );
         return Ok(response);
     }
 }

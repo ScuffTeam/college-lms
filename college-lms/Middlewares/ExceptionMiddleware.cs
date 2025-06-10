@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using college_lms.Data.DTOs.Base;
 
 namespace college_lms.Middlewares;
 
@@ -22,15 +23,27 @@ public class ExceptionMiddleware
         catch (UnauthorizedAccessException ex)
         {
             _logger.LogWarning(ex, "Unauthorized access");
-            await HandleExceptionAsync(context, ex, StatusCodes.Status401Unauthorized);
+            await HandleExceptionAsync(
+                context,
+                new ErrorResponse { Message = "Недостаточно прав" },
+                StatusCodes.Status403Forbidden
+            );
         }
         catch (ValidationException ex)
         {
             _logger.LogWarning(ex, "Validation failed");
             await HandleExceptionAsync(
                 context,
-                new { ex.Message },
-                StatusCodes.Status400BadRequest
+                new ValidationErrorResponse
+                {
+                    Message = "Одно или несколько полей не прошли валидацию",
+                    Errors = ex.ValidationResult.MemberNames.Select(name => new ValidationError
+                    {
+                        Field = name,
+                        Message = ex.ValidationResult.ErrorMessage,
+                    }),
+                },
+                StatusCodes.Status422UnprocessableEntity
             );
         }
         catch (Exception ex)
@@ -38,13 +51,13 @@ public class ExceptionMiddleware
             _logger.LogError(ex, "Unhandled exception");
             await HandleExceptionAsync(
                 context,
-                new { Message = "An unexpected error occurred" },
+                new ErrorResponse { Message = "Произошла непредвиденная ошибка" },
                 StatusCodes.Status500InternalServerError
             );
         }
     }
 
-    private static Task HandleExceptionAsync(HttpContext context, object response, int statusCode)
+    private static Task HandleExceptionAsync<T>(HttpContext context, T response, int statusCode)
     {
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = statusCode;
