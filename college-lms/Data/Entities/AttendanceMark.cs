@@ -17,17 +17,17 @@ public class AttendanceMark
     public int Id { get; set; }
 
     [Required]
-    public int Student_id { get; set; }
-    public User User { get; set; }
+    public int StudentId { get; set; }
+    public required User User { get; set; }
 
     [Required]
-    public int Lesson_id { get; set; }
-    public Lesson Lesson { get; set; }
+    public int LessonId { get; set; }
+    public required Lesson Lesson { get; set; }
 
     public int? Grade { get; set; }
 
     public Attendance? Attendance { get; set; }
 
-    public DateTime Created_At { get; set; }
+    public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }

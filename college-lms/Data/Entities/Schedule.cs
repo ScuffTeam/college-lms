@@ -21,7 +21,7 @@ public class Schedule
     public DateOnly Date { get; set; }
 
     [Required]
-    public Day Day_of_week { get; set; }
+    public Day DayOfWeek { get; set; }
 
-    public List<Lesson> Lessons { get; set; } = new()
+    public List<Lesson> Lessons { get; set; } = new();
 }

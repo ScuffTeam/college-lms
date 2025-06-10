@@ -8,18 +8,18 @@ public class User : IdentityUser
 {
 
     [Required]
-    public string Last_name { get; set; }
+    public required string LastName { get; set; }
 
     [Required]
-    public string First_name { get; set; }
+    public required string FirstName { get; set; }
 
-    public string? Patronymic { get; set; }
+    public string? MiddleName { get; set; }
 
-    public bool Is_teacher { get; set; }
+    public bool IsTeacher { get; set; }
 
-    public bool Is_admin { get; set; }
+    public bool IsAdmin { get; set; }
 
-    public DateTime Created_At { get; set; }
+    public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
     public List<Group> Groups { get; set; } = new();

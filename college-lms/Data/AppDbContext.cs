@@ -37,7 +37,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
         modelBuilder.Entity<AttendanceMark>()
                 .HasOne(a => a.User)
                 .WithMany(u => u.AttendanceMarks)
-                .HasForeignKey(a => a.Student_id)
+                .HasForeignKey(a => a.StudentId)
                 .OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<AttendanceMark>()
                 .HasOne(a => a.Lesson)
@@ -46,22 +46,22 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
         modelBuilder.Entity<Lesson>()
                 .HasOne(l => l.User)
                 .WithMany(u => u.Lessons)
-                .HasForeignKey(l => l.Teacher_id)
+                .HasForeignKey(l => l.TeacherId)
                 .OnDelete(DeleteBehavior.SetNull);
         modelBuilder.Entity<Lesson>()
                 .HasOne(l => l.Schedule)
                 .WithMany(s => s.Lessons)
-                .HasForeignKey(l => l.Schedule_id)
+                .HasForeignKey(l => l.ScheduleId)
                 .OnDelete(DeleteBehavior.SetNull);
         modelBuilder.Entity<Lesson>()
                 .HasOne(l => l.Room)
                 .WithMany(r => r.Lessons)
-                .HasForeignKey(l => l.Room_id)
+                .HasForeignKey(l => l.RoomId)
                 .OnDelete(DeleteBehavior.SetNull);
         modelBuilder.Entity<Homework>()
                 .HasOne(h => h.Lesson)
                 .WithMany(l => l.Homeworks)
-                .HasForeignKey(h => h.Lesson_id)
+                .HasForeignKey(h => h.LessonId)
                 .OnDelete(DeleteBehavior.SetNull);
     }
 }

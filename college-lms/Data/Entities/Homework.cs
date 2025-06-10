@@ -18,13 +18,13 @@ public class Homework
     public int Id { get; set; }
 
     [Required]
-    public int Lesson_id { get; set; }
-    public Lesson Lesson { get; set; }
+    public int LessonId { get; set; }
+    public required Lesson Lesson { get; set; }
 
     public string? Comment { get; set; }
 
     [Required]
-    public string Exercise { get; set; }
+    public required string Exercise { get; set; }
 
     public string? Solution { get; set; }
 
@@ -34,4 +34,4 @@ public class Homework
     [Required]
     public DateOnly Term { get; set; }
 
-==
+}

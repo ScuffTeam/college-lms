@@ -11,13 +11,13 @@ public class Room
 
     [Required]
     [MaxLength(255)]
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     [Required]
     [MaxLength(255)]
-    public string Building { get; set; }
+    public required string Building { get; set; }
 
-    public DateTime Created_At { get; set; }
+    public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
     public List<Lesson> Lessons { get; set; } = new();

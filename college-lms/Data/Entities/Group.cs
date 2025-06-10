@@ -10,11 +10,11 @@ public class Group
 
     [Required]
     [MaxLength(255)]
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     public string? Description { get; set; }
 
-    public DateTime Created_At { get; set; }
+    public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
     public List<User> Users { get; set; } = new();
