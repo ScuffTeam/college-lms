@@ -1,24 +1,23 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace college_lms.Data.Entities;
 
 public enum Attendance
 {
     Present,
-    Was_late,
-    Absent
+    Late,
+    Absent,
 }
 
-
-public class AttendanceMark
+public class AttendanceMark : EntityBase
 {
-    [Key]
-    public int Id { get; set; }
-
     [Required]
-    public int Student_id { get; set; }
-    public User User { get; set; }
+    [ForeignKey(nameof(User))]
+    [DeleteBehavior(DeleteBehavior.Cascade)]
+    public int StudentUserId { get; set; }
+    public required User User { get; set; }
 
     [Required]
     public int Lesson_id { get; set; }
@@ -27,7 +26,4 @@ public class AttendanceMark
     public int? Grade { get; set; }
 
     public Attendance? Attendance { get; set; }
-
-    public DateTime Created_At { get; set; }
-    public DateTime UpdatedAt { get; set; }
 }

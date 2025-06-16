@@ -1,20 +1,20 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace college_lms.Data.Entities;
 
-
-public class Lesson
+public class Lesson : EntityBase
 {
-    [Key]
-    public int Id { get; set; }
+    [Required]
+    [ForeignKey(nameof(Teacher))]
+    [DeleteBehavior(DeleteBehavior.SetNull)]
+    public int TeacherUserId { get; set; }
+    public required User Teacher { get; set; }
 
     [Required]
-    public int Teacher_id { get; set; }
-    public User User { get; set; }
-
-    [Required]
-    public int Group_id { get; set; }
+    public int GroupId { get; set; }
+    public required Group Group { get; set; }
 
     [Required]
     public int Room_id { get; set; }
@@ -23,6 +23,7 @@ public class Lesson
     [MaxLength(255)]
     public string? Topic { get; set; }
 
+    [MaxLength(2047)]
     public string? Description { get; set; }
 
     [Required]
@@ -32,18 +33,14 @@ public class Lesson
     public TimeOnly Time_end { get; set; }
 
     [Required]
-    public int Schedule_id { get; set; }
-    public Schedule Schedule { get; set; }
+    public DateOnly Date { get; set; }
 
     [Required]
     public int Pair_number { get; set; }
 
-    public DateTime Created_At { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public ICollection<Homework> Homeworks { get; set; } = [];
 
-    public List<Homework> Homeworks { get; set; } = new();
+    public ICollection<AttendanceMark> AttendanceMarks { get; set; } = [];
 
-    public List<AttendanceMark> AttendanceMarks { get; set; } = new();
-
-    public List<Group> Groups { get; set; } = new();
+    public ICollection<Group> Groups { get; set; } = [];
 }
