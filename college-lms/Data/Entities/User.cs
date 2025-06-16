@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace college_lms.Data.Entities;
 
-public class User : IdentityUser<int>, IWithTimestamps
+public class User : IdentityUser<int>, IWithTimestamps, IIdentifiable
 {
     [Required]
     public required string LastName { get; set; }
