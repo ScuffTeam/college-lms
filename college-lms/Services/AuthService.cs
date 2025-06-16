@@ -57,7 +57,7 @@ public class AuthService : IAuthService
         if (refreshTokenData == null || refreshTokenData.Expires < DateTime.UtcNow)
             throw new UnauthorizedAccessException("Invalid refresh token");
 
-        var user = await _userManager.FindByIdAsync(refreshTokenData.UserId);
+        var user = await _userManager.FindByIdAsync(refreshTokenData.UserId.ToString());
         if (user == null)
             throw new UnauthorizedAccessException("User not found");
 

@@ -15,13 +15,13 @@ public class AttendanceMark : EntityBase
 {
     [Required]
     [ForeignKey(nameof(User))]
-    [DeleteBehavior(DeleteBehavior.Cascade)]
     public int StudentUserId { get; set; }
+    [DeleteBehavior(DeleteBehavior.Cascade)]
     public required User User { get; set; }
 
     [Required]
     public int Lesson_id { get; set; }
-    public Lesson Lesson { get; set; }
+    public required Lesson Lesson { get; set; }
 
     public int? Grade { get; set; }
 
