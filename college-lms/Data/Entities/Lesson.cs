@@ -8,16 +8,13 @@ public class Lesson : EntityBase
 {
     [Required]
     [ForeignKey(nameof(Teacher))]
-    [DeleteBehavior(DeleteBehavior.SetNull)]
     public int TeacherUserId { get; set; }
+    [DeleteBehavior(DeleteBehavior.SetNull)]
     public required User Teacher { get; set; }
 
     [Required]
-    public int GroupId { get; set; }
-    public required Group Group { get; set; }
-
-    [Required]
-    public int Room_id { get; set; }
+    [ForeignKey(nameof(Room))]
+    public int RoomId { get; set; }
     public required Room Room { get; set; }
 
     [MaxLength(255)]
@@ -27,16 +24,18 @@ public class Lesson : EntityBase
     public string? Description { get; set; }
 
     [Required]
-    public TimeOnly Time_Start { get; set; }
+    public TimeOnly TimeStart { get; set; }
 
     [Required]
-    public TimeOnly Time_end { get; set; }
+    public TimeOnly TimeEnd { get; set; }
 
     [Required]
     public DateOnly Date { get; set; }
 
     [Required]
-    public int Pair_number { get; set; }
+    [ForeignKey(nameof(ModulePart))]
+    public int ModulePartId { get; set; }
+    public required ModulePart ModulePart { get; set; }
 
     public ICollection<Homework> Homeworks { get; set; } = [];
 

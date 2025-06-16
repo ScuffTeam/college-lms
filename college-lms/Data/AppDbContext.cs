@@ -20,6 +20,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
         modelBuilder
             .Entity<Room>()
             .HasIndex(r => new { r.Building, r.Name })

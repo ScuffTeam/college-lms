@@ -58,7 +58,7 @@ builder.Services.AddDbContext<AppDbContext>(
 
 // Setup Identity
 builder
-    .Services.AddIdentity<User, IdentityRole>(options =>
+    .Services.AddIdentity<User, IdentityRole<int>>(options =>
     {
         options.Password.RequireDigit = true;
         options.Password.RequireLowercase = true;

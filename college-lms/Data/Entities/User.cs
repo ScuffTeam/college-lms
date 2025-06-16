@@ -7,6 +7,9 @@ namespace college_lms.Data.Entities;
 public class User : IdentityUser<int>, IWithTimestamps, IIdentifiable
 {
     [Required]
+    [Key]
+    public override int Id { get; set; }
+    [Required]
     public required string LastName { get; set; }
     [Required]
     public required string FirstName { get; set; }
