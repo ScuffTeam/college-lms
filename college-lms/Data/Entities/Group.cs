@@ -6,7 +6,7 @@ public class Group : EntityBase
 {
     [Required]
     [MaxLength(255)]
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     public ICollection<User> Users { get; set; } = [];
 

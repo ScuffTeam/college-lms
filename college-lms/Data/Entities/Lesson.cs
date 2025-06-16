@@ -18,7 +18,7 @@ public class Lesson : EntityBase
 
     [Required]
     public int Room_id { get; set; }
-    public Room Room { get; set; }
+    public required Room Room { get; set; }
 
     [MaxLength(255)]
     public string? Topic { get; set; }
