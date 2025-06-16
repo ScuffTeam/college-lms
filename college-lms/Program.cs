@@ -1,5 +1,6 @@
 using System.Text;
 using college_lms;
+using college_lms.Data;
 using college_lms.Data.Entities;
 using college_lms.Middlewares;
 using college_lms.Services;
@@ -51,6 +52,7 @@ builder.Services.AddDbContext<AppDbContext>(
             Password = appOptions.DatabaseOptions.Password,
         };
         options.UseNpgsql(connectionStringBuilder.ConnectionString);
+        options.AddInterceptors(new TimestampsInterceptor());
     }
 );
 

@@ -3,20 +3,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace college_lms.Data.Entities;
 
-
 public enum Status
 {
     Active,
     Passed,
     Verified,
-    Expired
+    Expired,
 }
 
-public class Homework
+public class Homework : EntityBase
 {
-    [Key]
-    public int Id { get; set; }
-
     [Required]
     public int Lesson_id { get; set; }
     public Lesson Lesson { get; set; }
