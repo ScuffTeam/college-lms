@@ -21,7 +21,8 @@ docker-compose up -d --build
 
 1. Copy development env in project dir and provide same variable values as .env
 ```sh
-cp env.Development.example env.Development
+cd ./college-lms/
+cp .env.Development.example .env.Development
 ```
 2. Use `dotnet run` with variables provided 
 
