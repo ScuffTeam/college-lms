@@ -16,6 +16,7 @@ public class AttendanceMark : EntityBase
     [Required]
     [ForeignKey(nameof(User))]
     public int StudentUserId { get; set; }
+
     [DeleteBehavior(DeleteBehavior.Cascade)]
     public required User User { get; set; }
 

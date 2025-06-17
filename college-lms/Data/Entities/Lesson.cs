@@ -9,6 +9,7 @@ public class Lesson : EntityBase
     [Required]
     [ForeignKey(nameof(Teacher))]
     public int TeacherUserId { get; set; }
+
     [DeleteBehavior(DeleteBehavior.SetNull)]
     public required User Teacher { get; set; }
 

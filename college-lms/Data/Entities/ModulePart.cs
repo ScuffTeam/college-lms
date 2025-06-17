@@ -8,5 +8,4 @@ public class ModulePart : EntityBase
     public int ModuleId { get; set; }
     public required Module Module { get; set; }
     public required string Title { get; set; }
-
 }
