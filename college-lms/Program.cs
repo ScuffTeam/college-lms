@@ -30,6 +30,7 @@ if (builder.Environment.IsDevelopment())
 }
 
 builder.Configuration.AddEnvironmentVariables();
+builder.Services.AddScoped<IUserService, UserService>();
 
 // Configure AppSettings from environment variables
 builder
